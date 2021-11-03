@@ -25,7 +25,7 @@ def find_new_articles():
     if not os.path.exists(directory):
         os.makedirs(directory)
     
-    file = open('/home/hamza/Bureau/arxiv-rss-master/old/2021-11-02.arxiv-others', 'r')
+    file = open('/home/hamza/Bureau/arxiv-rss-master/arxiv-others', 'r')
     lines = file.readlines()
     for i, line in enumerate(lines):
         if i > 1:
@@ -49,18 +49,24 @@ def find_all_articles():
         directory = "./papers/" + name + "/" + datetime.today().strftime('%Y-%m-%d')
         if not os.path.exists(directory):
             os.makedirs(directory)
+        else:
+            continue
         
         file = open('/home/hamza/Bureau/arxiv-rss-master/old/2021-11-02.arxiv-others', 'r')
         lines = file.readlines()
         for i, line in enumerate(lines):
             if i > 1:
                 link = get_link(line)
-                os.system("arxiv-downloader --url " + link + " --directory " + directory)
+                if link is not None:
+                    os.system("arxiv-downloader --url " + link + " --directory " + directory)
 
 
 
 def get_link(line):
-    return re.search("(?P<url>https?://[^\s]+)", line).group("url")
+    try:
+        return re.search("(?P<url>https?://[^\s]+)", line).group("url")
+    except:
+        return 
 
 if len(sys.argv) > 1:
     for name in sys.argv[1:]:

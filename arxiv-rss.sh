@@ -3,7 +3,7 @@
 # vim: syntax=sh
 export LANG=C.UTF-8
 
-#          file: /mnt/Vancouver/programming/scripts/arxiv-rss.sh
+#           file: /mnt/Vancouver/programming/scripts/arxiv-rss.sh
 #       version: 14
 # last modified: 2020-06-02 08:20:37 -0700 (PST)
 #     called by: /etc/crontab (7 am daily)                                      ## 0 7 * * * victoria nice -n 19 /mnt/Vancouver/programming/scripts/arxiv-rss.sh

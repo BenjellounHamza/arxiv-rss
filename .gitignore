@@ -1,4 +1,6 @@
 .a*
 .d*
-./papers/*
-./old/*
+papers/*
+old/*
+arxiv-others
+arxiv-filtered

@@ -42,7 +42,7 @@ def find_all_articles():
 
     for name in domain:
         print("waiting 15 min to extract new category")
-        time.sleep(900)
+        #time.sleep(900)
         os.system("sudo ./arxiv-rss.sh " + name)
         directory = "./papers/" + name
         if not os.path.exists(directory):
@@ -57,10 +57,10 @@ def find_all_articles():
         file = open('/home/hamza/Bureau/arxiv-rss-master/arxiv-others', 'r')
         lines = file.readlines()
         for i, line in enumerate(lines):
-            if i > 1 and i < 21:
+            if i > 1 and i < 6:
                 link = get_link(line)
                 if link is not None:
-                    time.sleep(10)
+                    #time.sleep(10)
                     os.system("arxiv-downloader --url " + link + " --directory " + directory)
 
 

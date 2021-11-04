@@ -347,7 +347,7 @@ if [ -f arxiv-others ]; then
   sed -i arxiv-* -f sed_characters
   # Desktop notification, with an arXiv png logo (available at https://persagen.com/files/misc/arxiv.png):
   # notify-send -i "/mnt/Vancouver/programming/scripts/arxiv.png" -t 0 "New arXiv RSS feeds at" "<span color='#57dafd' font='26px'><a href=\"file:///mnt/Vancouver/apps/arxiv/\">/mnt/Vancouver/apps/arxiv/</a></span>"
-  #mutt -e "set content_type=text/text" -s 'arxiv-others' mail@VictoriasJourney.com -i /mnt/Vancouver/apps/arxiv/arxiv-others
+  #mutt -e "set content_type=text/text" -s 'arxiv-others' hmzbnjlln@gmail.com -i /mnt/Vancouver/apps/arxiv/arxiv-others
 fi
 
 # ----------------------------------------

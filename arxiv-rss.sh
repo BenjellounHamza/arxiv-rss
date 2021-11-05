@@ -334,33 +334,17 @@ fi
 # One-liner:
 # if [ -f arxiv-others ]; then sed -i arxiv-* -f sed_characters; mutt -e "set content_type=text/text" -s 'arxiv-others' mail@VictoriasJourney.com -i /mnt/Vancouver/apps/arxiv/arxiv-others; fi
 
-if [ -f arxiv-filtered ]; then
-  # Replace HTML, non-unicode characters in titles via external "sed_characters" lookup file:
-  sed -i arxiv-* -f sed_characters
-  # Desktop notification, with an arXiv png logo (available at https://persagen.com/files/misc/arxiv.png):
-  # notify-send -i "/mnt/Vancouver/programming/scripts/arxiv.png" -t 0 "New arXiv RSS feeds at" "<span color='#57dafd' font='26px'><a href=\"file:///mnt/Vancouver/apps/arxiv/\">/mnt/Vancouver/apps/arxiv/</a></span>"
-  #mutt -e "set content_type=text/text" -s 'arxiv-filtered' mail@VictoriasJourney.com -i /mnt/Vancouver/apps/arxiv/arxiv-filtered
-fi
-
-if [ -f arxiv-others ]; then
-  # Replace HTML, non-unicode characters in titles via external "sed_characters" lookup file:
-  sed -i arxiv-* -f sed_characters
-  # Desktop notification, with an arXiv png logo (available at https://persagen.com/files/misc/arxiv.png):
-  # notify-send -i "/mnt/Vancouver/programming/scripts/arxiv.png" -t 0 "New arXiv RSS feeds at" "<span color='#57dafd' font='26px'><a href=\"file:///mnt/Vancouver/apps/arxiv/\">/mnt/Vancouver/apps/arxiv/</a></span>"
-  #mutt -e "set content_type=text/text" -s 'arxiv-others' hmzbnjlln@gmail.com -i /mnt/Vancouver/apps/arxiv/arxiv-others
-fi
-
-# ----------------------------------------
-# Clean up:
-
-# rm 2>/dev/null -f .arxiv*                                                     ## { .arxiv | .arxiv-dedupped | .arxiv-temp }
-echo
-# ============================================================================
-
-
 cp /mnt/Vancouver/apps/arxiv/.a* $path
 cp /mnt/Vancouver/apps/arxiv/.d* $path
 cp -R /mnt/Vancouver/apps/arxiv/old $path
 [ -f  arxiv-filtered ] && cp -r arxiv-filtered $path
 [ -f  arxiv-others ] && cp -r arxiv-others $path
 
+if [ -f arxiv-others ]; then
+  # Replace HTML, non-unicode characters in titles via external "sed_characters" lookup file:
+  sed -i arxiv-* -f sed_characters
+  # Desktop notification, with an arXiv png logo (available at https://persagen.com/files/misc/arxiv.png):
+  # notify-send -i "/mnt/Vancouver/programming/scripts/arxiv.png" -t 0 "New arXiv RSS feeds at" "<span color='#57dafd' font='26px'><a href=\"file:///mnt/Vancouver/apps/arxiv/\">/mnt/Vancouver/apps/arxiv/</a></span>"
+  sudo sed -i 's/https:\/\// /g' /mnt/Vancouver/apps/arxiv/.arxiv-dedupped
+  cat /mnt/Vancouver/apps/arxiv/.arxiv-dedupped >> /home/hamza/Bureau/arxiv-rss-master/articles_added
+fi

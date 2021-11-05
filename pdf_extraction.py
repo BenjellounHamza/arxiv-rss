@@ -4,6 +4,7 @@ import json
 from bs4 import BeautifulSoup
 from dateutil import parser
 from datetime import datetime
+import glob
 
 def author(source):
 
@@ -48,25 +49,28 @@ def extract(path_directory):
   dicts = {}
 
   for article in pdf_files:
-    dict = {}
-    doc = fitz.open(article)
-    whole_pdf = ""
-    for page in doc:
-      whole_pdf = whole_pdf + page.getText("text")  
+    try:
+      dict = {}
+      doc = fitz.open(article)
+      whole_pdf = ""
+      for page in doc:
+        whole_pdf = whole_pdf + page.getText("text")  
 
-    dict['text'] = whole_pdf
-    cmd = 'curl -v --form input=@' + article + ' localhost:8070/api/processHeaderDocument > ' + article[:-4] + '.xml'
-    os.system(cmd)
-    tei_doc = article[:-4] + '.xml'
-    with open(tei_doc, 'r') as tei:
-    	soup = BeautifulSoup(tei, 'lxml')
+      dict['text'] = whole_pdf
+      cmd = 'curl -v --form input=@' + article + ' localhost:8070/api/processHeaderDocument > ' + article[:-4] + '.xml'
+      os.system(cmd)
+      tei_doc = article[:-4] + '.xml'
+      with open(tei_doc, 'r') as tei:
+        soup = BeautifulSoup(tei, 'lxml')
 
-    dict['abstract'] = soup.abstract.getText(separator=' ', strip=True)
-    dict['title'] = soup.title.getText()
-    dict['autors'] = author(soup)
-    dict['date'] = date(soup)
-    
-    dicts[article] = dict
+      dict['abstract'] = soup.abstract.getText(separator=' ', strip=True)
+      dict['title'] = soup.title.getText()
+      dict['autors'] = author(soup)
+      dict['date'] = date(soup)
+      
+      dicts[article] = dict
+    except:
+      print("can't open file")
     
   return dicts
 
@@ -74,6 +78,7 @@ def extract(path_directory):
 def main():
     path = './papers'
     extractions = extract(path)
+    # store data
     d = datetime.today().strftime('%Y-%m-%d')
     if not os.path.exists("database"):
             os.makedirs("database")
@@ -81,6 +86,12 @@ def main():
             os.makedirs("database/" + d)
     with open("./database/" + d +"/data.json", 'w') as json_out:
         json.dump(extractions, json_out, default=str)
+
+    # merge data
+    if not os.path.exists("./database/merged"):
+        os.makedirs("./database/merged")
+    #TODO
+
 
 if __name__ == '__main__':
     main()

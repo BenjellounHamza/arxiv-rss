@@ -85,9 +85,9 @@ def find_all_articles():
                 directory = "./papers/" + name + "/" + datetime.today().strftime('%Y-%m-%d')
 
                 for i, line in enumerate(lines):
-                    if i > 0 and i < 2:
+                    if i > 0:
                         link = get_link(line)
-                        if link is not None:
+                        if link is not None and not exist(get_id(link), name):
                             #time.sleep(10)
                             os.system("arxiv-downloader --url " + link + " --directory " + directory)
 
@@ -111,7 +111,7 @@ def find_all_articles():
                         print(line)
                         if i > 0:
                             link = get_link(line)
-                            if link is not None:
+                            if link is not None and not exist(get_id(link), "blockchain"):
                                 os.system("arxiv-downloader --url " + link + " --directory " + directory)
                     os.system('sudo rm arxiv-filtered')
                 except:
@@ -132,8 +132,7 @@ def find_all_articles():
                     for i, line in enumerate(lines):
                         if i > 0:
                             link = get_link(line)
-                            print(link)
-                            if link is not None:
+                            if link is not None and not exist(get_id(link), "autombile"):
                                 os.system("arxiv-downloader --url " + link + " --directory " + directory)
 
                     os.system('sudo rm arxiv-filtered')
@@ -146,6 +145,18 @@ def get_link(line):
         return re.search("(?P<url>https?://[^\s]+)", line).group("url")
     except:
         return 
+
+def get_id(link):
+    split = link.split("/")
+    return split[-1]
+
+def exist(id, directory):
+    for root, dirs, files in os.walk('./papers/' + directory):  
+        for file in files:
+            if id in file:
+                print ("File exists")
+                return True
+    return False
 
 if len(sys.argv) > 1:
     for name in sys.argv[1:]:

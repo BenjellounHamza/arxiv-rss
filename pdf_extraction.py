@@ -74,7 +74,6 @@ def extract(path_directory):
     
   return dicts
 
-
 def main():
     path = './papers'
     extractions = extract(path)

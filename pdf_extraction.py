@@ -4,7 +4,6 @@ import json
 from bs4 import BeautifulSoup
 from dateutil import parser
 from datetime import datetime
-import glob
 
 def author(source):
 
@@ -73,6 +72,16 @@ def extract(path_directory):
       print("can't open file")
     
   return dicts
+
+
+def merge_JsonFiles(filename):
+    result = list()
+    for f1 in filename:
+        with open(f1, 'r') as infile:
+            result.extend(json.load(infile))
+
+    with open('counseling3.json', 'w') as output_file:
+        json.dump(result, output_file)
 
 def main():
     path = './papers'

@@ -1,8 +1,0 @@
-pip3 install pymupdf
-pip3 install simplejson
-pip3 install beautifulsoup4
-pip3 install python-dateutil
-
-
-docker pull lfoppiano/grobid:0.7.0
-docker run -t --rm --init -p 8070:8070 lfoppiano/grobid:0.7.0

@@ -1,9 +1,11 @@
 import fitz
 import os
 import json
+
 from bs4 import BeautifulSoup
 from dateutil import parser
 from datetime import datetime
+from jsonmerge import merge
 
 def author(source):
 
@@ -74,14 +76,24 @@ def extract(path_directory):
   return dicts
 
 
-def merge_JsonFiles(filename):
-    result = list()
-    for f1 in filename:
-        with open(f1, 'r') as infile:
-            result.extend(json.load(infile))
 
-    with open('counseling3.json', 'w') as output_file:
+
+def merge_JsonFiles():
+
+  namefile = []
+  for root, dirs, files in os.walk("./database"):
+    for name in files:
+        if name.endswith((".json")) and "merged" not in root:
+            namefile.append(root + "/" + name)
+    result = {}
+
+    for f1 in namefile:
+        with open(f1) as infile:
+            data = json.loads(infile.read())
+            result = merge(result, data)
+    with open('./database/merged/data.json', 'w') as output_file:
         json.dump(result, output_file)
+
 
 def main():
     path = './papers'
@@ -99,6 +111,7 @@ def main():
     if not os.path.exists("./database/merged"):
         os.makedirs("./database/merged")
     #TODO
+    merge_JsonFiles()
 
 
 if __name__ == '__main__':
